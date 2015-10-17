@@ -8,6 +8,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @covers MMPL15\ProductStatus\Console\Command\EnableProductCommand
+ */
 class EnableProductCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**

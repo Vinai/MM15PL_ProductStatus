@@ -6,6 +6,9 @@ namespace MMPL15\ProductStatus\Model;
 use MMPL15\ProductStatus\Api\ProductStatusManagementInterface;
 use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
+/**
+ * @covers \MMPL15\ProductStatus\Model\ProductStatusManagement
+ */
 class ProductStatusManagementTest extends \PHPUnit_Framework_TestCase
 {
     /**

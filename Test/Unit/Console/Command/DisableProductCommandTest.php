@@ -9,6 +9,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @covers \MMPL15\ProductStatus\Console\Command\DisableProductCommand
+ */
 class DisableProductCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
