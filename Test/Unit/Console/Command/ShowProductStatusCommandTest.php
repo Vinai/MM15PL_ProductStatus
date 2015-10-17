@@ -3,6 +3,7 @@
 
 namespace MMPL15\ProductStatus\Console\Command;
 
+use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +20,7 @@ class ShowProductStatusCommandTest extends \PHPUnit_Framework_TestCase
     private $command;
 
     /**
-     * @var ProductStatusAdapter|\PHPUnit_Framework_MockObject_MockObject
+     * @var ProductStatusAdapterInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     private $mockProductStatusAdapter;
 
@@ -35,8 +36,7 @@ class ShowProductStatusCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->mockProductStatusAdapter = $this->getMock(ProductStatusAdapter::class,
-            ['getStatusForProductsMatchingSku']);
+        $this->mockProductStatusAdapter = $this->getMock(ProductStatusAdapterInterface::class);
         $this->command = new ShowProductStatusCommand($this->mockProductStatusAdapter);
 
         $this->mockInput = $this->getMock(InputInterface::class);
@@ -87,9 +87,10 @@ class ShowProductStatusCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testItDisplaysAConfirmationMessageIfThereIsNoException()
     {
-        $expectedMessage = 'Status of product "test": enabled';
+        $expectedMessage = 'Status of product "test": ';
         $this->mockInput->method('getArgument')->willReturn('test');
-        $this->mockProductStatusAdapter->method('getStatusForProductsMatchingSku')->willReturn(['test' => 'enabled']);
+        $this->mockProductStatusAdapter->method('getStatusForProductsMatchingSku')
+            ->willReturn(['test' => ProductStatusAdapterInterface::ENABLED]);
         $this->mockOutput->expects($this->once())->method('writeln')
             ->with($this->stringStartsWith('<info>' . $expectedMessage));
         $this->command->run($this->mockInput, $this->mockOutput);
@@ -109,13 +110,13 @@ class ShowProductStatusCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockProductStatusAdapter->method('getStatusForProductsMatchingSku')
             ->willReturn([
-                'test1' => 'enabled',
-                'test2' => 'disabled',
+                'test1' => ProductStatusAdapterInterface::ENABLED,
+                'test2' => ProductStatusAdapterInterface::DISABLED,
             ]);
         $this->mockOutput->expects($this->exactly(2))->method('writeln')
             ->withConsecutive(
-                [$this->stringContains('Status of product "test1": enabled')],
-                [$this->stringContains('Status of product "test2": disabled')]
+                [$this->stringContains('Status of product "test1": ' . ProductStatusAdapterInterface::ENABLED)],
+                [$this->stringContains('Status of product "test2": ' . ProductStatusAdapterInterface::DISABLED)]
             );
         $this->command->run($this->mockInput, $this->mockOutput);
     }

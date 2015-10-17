@@ -3,6 +3,7 @@
 
 namespace MMPL15\ProductStatus\Console\Command;
 
+use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,11 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ShowProductStatusCommand extends Command
 {
     /**
-     * @var ProductStatusAdapter
+     * @var ProductStatusAdapterInterface
      */
     private $productStatusAdapter;
 
-    public function __construct(ProductStatusAdapter $productStatusAdapter)
+    public function __construct(ProductStatusAdapterInterface $productStatusAdapter)
     {
         $this->productStatusAdapter = $productStatusAdapter;
         parent::__construct();
