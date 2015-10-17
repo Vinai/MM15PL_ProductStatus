@@ -32,6 +32,7 @@ class ProductStatusManagement implements ProductStatusManagementInterface
     /**
      * @param string $sku
      * @param string $status "enabled" or "disabled"
+     * @return string
      */
     public function set($sku, $status)
     {
@@ -41,6 +42,7 @@ class ProductStatusManagement implements ProductStatusManagementInterface
         } else {
             $this->productStatusAdapter->disableProductWithSku($sku);
         }
+        return $status;
     }
 
     /**

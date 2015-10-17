@@ -14,7 +14,7 @@ interface ProductStatusManagementInterface
     /**
      * @param string $sku
      * @param string $status "enabled" or "disabled"
-     * @return void
+     * @return string
      */
     public function set($sku, $status);
 }

@@ -8,5 +8,11 @@
             <resource ref="MMPL15_ProductStatus::product_status"/>
         </resources>
     </route>
+    <route method="PUT" url="/V1/mmpl15/product/status/:sku">
+        <service class="\MMPL15\ProductStatus\Api\ProductStatusManagementInterface" method="set"/>
+        <resources>
+            <resource ref="MMPL15_ProductStatus::product_status"/>
+        </resources>
+    </route>
     
 </routes>
