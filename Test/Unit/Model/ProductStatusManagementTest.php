@@ -34,4 +34,25 @@ class ProductStatusManagementTest extends \PHPUnit_Framework_TestCase
         $this->mockProductStatusAdapter->method('getStatusBySku')->willReturn(ProductStatusAdapterInterface::ENABLED);
         $this->assertSame(ProductStatusAdapterInterface::ENABLED, $this->statusManagement->get('test'));
     }
+
+    public function testItDelegatesEnablingProductsToTheProductStatusAdapter()
+    {
+        $this->mockProductStatusAdapter->expects($this->once())->method('enableProductWithSku');
+        $this->statusManagement->set('test', ProductStatusAdapterInterface::ENABLED);
+    }
+
+    public function testItDelegatesDisablingProductsToTheProductStatusAdapter()
+    {
+        $this->mockProductStatusAdapter->expects($this->once())->method('disableProductWithSku');
+        $this->statusManagement->set('test', ProductStatusAdapterInterface::DISABLED);
+    }
+
+    public function testItThrowsAnExceptionIfTheStatusIsInvalid()
+    {
+        $this->setExpectedException(
+            \InvalidArgumentException::class,
+            'The given status is invalid, it must be one of "enabled" or "disabled"'
+        );
+        $this->statusManagement->set('test', 'foo');
+    }
 }

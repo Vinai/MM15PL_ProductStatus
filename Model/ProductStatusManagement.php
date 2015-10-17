@@ -8,6 +8,8 @@ use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
 class ProductStatusManagement implements ProductStatusManagementInterface
 {
+    private $validStateIdentifiers = [ProductStatusAdapterInterface::ENABLED, ProductStatusAdapterInterface::DISABLED];
+    
     /**
      * @var ProductStatusAdapterInterface
      */
@@ -25,5 +27,32 @@ class ProductStatusManagement implements ProductStatusManagementInterface
     public function get($sku)
     {
         return $this->productStatusAdapter->getStatusBySku($sku);
+    }
+
+    /**
+     * @param string $sku
+     * @param string $status "enabled" or "disabled"
+     */
+    public function set($sku, $status)
+    {
+        $this->validateStatus($status);
+        if (ProductStatusAdapterInterface::ENABLED === $status) {
+            $this->productStatusAdapter->enableProductWithSku($sku);
+        } else {
+            $this->productStatusAdapter->disableProductWithSku($sku);
+        }
+    }
+
+    /**
+     * @param string $status
+     */
+    private function validateStatus($status)
+    {
+        if (!in_array($status, $this->validStateIdentifiers)) {
+            throw new \InvalidArgumentException(sprintf(
+                'The given status is invalid, it must be one of "%s"',
+                implode('" or "', $this->validStateIdentifiers)
+            ));
+        }
     }
 }
