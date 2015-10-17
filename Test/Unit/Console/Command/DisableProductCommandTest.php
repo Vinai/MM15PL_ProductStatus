@@ -33,10 +33,7 @@ class DisableProductCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->mockProductStatusAdapter = $this->getMock(
-            ProductStatusAdapterInterface::class,
-            array_merge(get_class_methods(ProductStatusAdapterInterface::class))
-        );
+        $this->mockProductStatusAdapter = $this->getMock(ProductStatusAdapterInterface::class);
         $this->command = new DisableProductCommand($this->mockProductStatusAdapter);
         $this->mockInput = $this->getMock(InputInterface::class);
         $this->mockOutput = $this->getMock(OutputInterface::class);
@@ -88,9 +85,9 @@ class DisableProductCommandTest extends \PHPUnit_Framework_TestCase
         $expectedMessage = 'Status of product "test": ' . ProductStatusAdapterInterface::DISABLED;
         $this->mockOutput->expects($this->once())->method('writeln')
             ->with($this->stringStartsWith('<info>' . $expectedMessage));
-        
+
         $this->mockInput->method('getArgument')->willReturn('test');
-        
+
         $this->command->run($this->mockInput, $this->mockOutput);
     }
 }
