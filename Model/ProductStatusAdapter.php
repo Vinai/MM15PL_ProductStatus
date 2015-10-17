@@ -97,4 +97,15 @@ class ProductStatusAdapter implements ProductStatusAdapterInterface
         $product->setStatus(ProductStatus::STATUS_DISABLED);
         $this->productRepository->save($product);
     }
+
+    /**
+     * @param string $sku
+     * @return string
+     */
+    public function getStatusBySku($sku)
+    {
+        $this->validateSku($sku);
+        $product = $this->productRepository->get($sku);
+        return $this->getStatusString($product);
+    }
 }

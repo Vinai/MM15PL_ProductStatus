@@ -116,7 +116,8 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'getStatusForProductsMatchingSku' => ['getStatusForProductsMatchingSku'],
-            'disableProductWithSku' => ['disableProductWithSku']
+            'disableProductWithSku' => ['disableProductWithSku'],
+            'getStatusBySku' => ['getStatusBySku'],
         ];
     }
 
@@ -172,4 +173,11 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
         $this->productStatusAdapter->disableProductWithSku('test');
     }
 
+    public function testItTranslatesTheProductsStatusToTheStatusString()
+    {
+        $mockProduct = $this->getMockEnabledProduct('test');
+        $this->mockProductRepository->method('get')->with('test')->willReturn($mockProduct);
+        
+        $this->assertSame(ProductStatusAdapterInterface::ENABLED, $this->productStatusAdapter->getStatusBySku('test'));
+    }
 }

@@ -10,4 +10,5 @@
         </arguments>
     </type>
     <preference for="\MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface" type="\MMPL15\ProductStatus\Model\ProductStatusAdapter"/>
+    <preference for="\MMPL15\ProductStatus\Api\ProductStatusManagementInterface" type="\MMPL15\ProductStatus\Model\ProductStatusManagement"/>
 </config>
