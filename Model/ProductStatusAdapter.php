@@ -8,6 +8,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
+use Magento\Framework\App\State as AppState;
 
 class ProductStatusAdapter implements ProductStatusAdapterInterface
 {
@@ -23,10 +24,14 @@ class ProductStatusAdapter implements ProductStatusAdapterInterface
 
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        AppState $appState
     ) {
         $this->productRepository = $productRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        try {
+            $appState->setAreaCode('adminhtml');
+        } catch (\Exception $e) {}
     }
 
     /**
@@ -51,9 +56,9 @@ class ProductStatusAdapter implements ProductStatusAdapterInterface
     private function validateSku($sku)
     {
         if (!is_string($sku)) {
-            throw new \InvalidArgumentException('The SKU pattern has to be a string, got "integer"');
+            throw new \InvalidArgumentException(sprintf('The SKU pattern has to be a string, got "%s"', gettype($sku)));
         }
-        if (empty($sku)) {
+        if (empty(trim($sku))) {
             throw new \InvalidArgumentException('The given SKU pattern can not be empty');
         }
     }
@@ -77,5 +82,19 @@ class ProductStatusAdapter implements ProductStatusAdapterInterface
     {
         $skuWithoutWildcards = str_replace(['%', '_'], '', $sku);
         return '%' . $skuWithoutWildcards . '%';
+    }
+
+    /**
+     * @param string $sku
+     */
+    public function disableProductWithSku($sku)
+    {
+        $this->validateSku($sku);
+        $product = $this->productRepository->get($sku);
+        if ($product->getStatus() === ProductStatus::STATUS_DISABLED) {
+            throw new \RuntimeException(sprintf('The product with the SKU "%s" already is disabled', $sku));
+        }
+        $product->setStatus(ProductStatus::STATUS_DISABLED);
+        $this->productRepository->save($product);
     }
 }

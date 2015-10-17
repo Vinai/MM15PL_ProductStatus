@@ -9,6 +9,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\App\State as AppState;
 use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
 /**
@@ -38,10 +39,28 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $sku
+     * @return ProductInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockEnabledProduct($sku)
+    {
+        return $this->getMockProductWithStatus($sku, ProductStatus::STATUS_ENABLED);
+    }
+
+    /**
+     * @param string $sku
+     * @return ProductInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    private function getMockDisabledProduct($sku)
+    {
+        return $this->getMockProductWithStatus($sku, ProductStatus::STATUS_DISABLED);
+    }
+
+    /**
+     * @param string $sku
      * @param int $status
      * @return ProductInterface|\PHPUnit_Framework_MockObject_MockObject
      */
-    private function getMockProduct($sku, $status)
+    private function getMockProductWithStatus($sku, $status)
     {
         $mockProduct = $this->getMock(ProductInterface::class);
         $mockProduct->method('getSku')->willReturn($sku);
@@ -58,31 +77,47 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
         $this->mockSearchCriteriaBuilder->method('create')->willReturn($this->getMock(SearchCriteriaInterface::class));
         $this->productStatusAdapter = new ProductStatusAdapter(
             $this->mockProductRepository,
-            $this->mockSearchCriteriaBuilder
+            $this->mockSearchCriteriaBuilder,
+            $this->getMock(AppState::class, [], [], '', false)
         );
     }
-
     public function testItImplementsTheInterface()
     {
         $this->assertInstanceOf(ProductStatusAdapterInterface::class, $this->productStatusAdapter);
     }
 
-    public function testItThrowsAnExceptionIfTheGivenSkuIsNotAString()
+    /**
+     * @param string $methodName
+     * @dataProvider methodsWithSkuArgumentProvider
+     */
+    public function testItThrowsAnExceptionIfTheGivenSkuIsNotAString($methodName)
     {
         $this->setExpectedException(
             \InvalidArgumentException::class,
             'The SKU pattern has to be a string, got "integer"'
         );
-        $this->productStatusAdapter->getStatusForProductsMatchingSku(111);
+        call_user_func([$this->productStatusAdapter, $methodName], 111);
     }
 
-    public function testItThrowsAnExceptionIfTheGivenSkuIsEmpty()
+    /**
+     * @param string $methodName
+     * @dataProvider methodsWithSkuArgumentProvider
+     */
+    public function testItThrowsAnExceptionIfTheGivenSkuIsEmpty($methodName)
     {
         $this->setExpectedException(
             \InvalidArgumentException::class,
             'The given SKU pattern can not be empty'
         );
-        $this->productStatusAdapter->getStatusForProductsMatchingSku('');
+        call_user_func([$this->productStatusAdapter, $methodName], ' ');
+    }
+
+    public function methodsWithSkuArgumentProvider()
+    {
+        return [
+            'getStatusForProductsMatchingSku' => ['getStatusForProductsMatchingSku'],
+            'disableProductWithSku' => ['disableProductWithSku']
+        ];
     }
 
     public function testItQueriesAProductRepository()
@@ -108,8 +143,8 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
     public function testItTranslatesProductRepositorySearchResultsIntoTheDesiredReturnArrayFormat()
     {
         $this->mockSearchResults->method('getItems')->willReturn([
-            $this->getMockProduct('test1', ProductStatus::STATUS_ENABLED),
-            $this->getMockProduct('test2', ProductStatus::STATUS_DISABLED),
+            $this->getMockEnabledProduct('test1'),
+            $this->getMockDisabledProduct('test2'),
         ]);
         $expectedResult = [
             'test1' => ProductStatusAdapterInterface::ENABLED,
@@ -117,4 +152,24 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
         ];
         $this->assertSame($expectedResult, $this->productStatusAdapter->getStatusForProductsMatchingSku('test'));
     }
+
+    public function testItThrowsAnExceptionIfTheProductAlreadyIsDisabled()
+    {
+        $this->mockProductRepository->method('get')->willReturn($this->getMockDisabledProduct('test'));
+        $this->setExpectedException(
+            \RuntimeException::class,
+            'The product with the SKU "test" already is disabled'
+        );
+        $this->productStatusAdapter->disableProductWithSku('test');
+    }
+
+    public function testItDisablesAnExistingProduct()
+    {
+        $mockProduct = $this->getMockEnabledProduct('test');
+        $mockProduct->expects($this->once())->method('setStatus')->with(ProductStatus::STATUS_DISABLED);
+        $this->mockProductRepository->method('get')->willReturn($mockProduct);
+        $this->mockProductRepository->expects($this->once())->method('save');
+        $this->productStatusAdapter->disableProductWithSku('test');
+    }
+
 }

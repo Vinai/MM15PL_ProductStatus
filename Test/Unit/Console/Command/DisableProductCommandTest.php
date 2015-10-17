@@ -35,7 +35,7 @@ class DisableProductCommandTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockProductStatusAdapter = $this->getMock(
             ProductStatusAdapterInterface::class,
-            array_merge(get_class_methods(ProductStatusAdapterInterface::class), ['disableProductWithSku'])
+            array_merge(get_class_methods(ProductStatusAdapterInterface::class))
         );
         $this->command = new DisableProductCommand($this->mockProductStatusAdapter);
         $this->mockInput = $this->getMock(InputInterface::class);
