@@ -11,6 +11,9 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
+/**
+ * @covers \MMPL15\ProductStatus\Model\ProductStatusAdapter
+ */
 class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
