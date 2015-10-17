@@ -32,10 +32,7 @@ class EnableProductCommandTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->mockProductStatusAdapter = $this->getMock(
-            ProductStatusAdapterInterface::class,
-            array_merge(get_class_methods(ProductStatusAdapterInterface::class), ['enableProductWithSku'])
-        );
+        $this->mockProductStatusAdapter = $this->getMock(ProductStatusAdapterInterface::class);
         $this->command = new EnableProductCommand($this->mockProductStatusAdapter);
         $this->mockInput = $this->getMock(InputInterface::class);
         $this->mockOutput = $this->getMock(OutputInterface::class);

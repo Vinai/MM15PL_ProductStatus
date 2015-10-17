@@ -21,6 +21,12 @@ interface ProductStatusAdapterInterface
     public function disableProductWithSku($sku);
 
     /**
+     * @param string $sku
+     * @return void
+     */
+    public function enableProductWithSku($sku);
+
+    /**
      * @param $sku
      * @return string
      */

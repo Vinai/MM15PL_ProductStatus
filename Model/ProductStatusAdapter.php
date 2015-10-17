@@ -108,4 +108,18 @@ class ProductStatusAdapter implements ProductStatusAdapterInterface
         $product = $this->productRepository->get($sku);
         return $this->getStatusString($product);
     }
+
+    /**
+     * @param string $sku
+     */
+    public function enableProductWithSku($sku)
+    {
+        $this->validateSku($sku);
+        $product = $this->productRepository->get($sku);
+        if ($product->getStatus() == ProductStatus::STATUS_ENABLED) {
+            throw new \RuntimeException(sprintf('The product with the SKU "%s" already is enabled', $sku));
+        }
+        $product->setStatus(ProductStatus::STATUS_ENABLED);
+        $this->productRepository->save($product);
+    }
 }

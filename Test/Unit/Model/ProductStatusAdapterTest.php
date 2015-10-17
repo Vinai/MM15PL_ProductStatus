@@ -117,6 +117,7 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
         return [
             'getStatusForProductsMatchingSku' => ['getStatusForProductsMatchingSku'],
             'disableProductWithSku' => ['disableProductWithSku'],
+            'enableProductWithSku' => ['enableProductWithSku'],
             'getStatusBySku' => ['getStatusBySku'],
         ];
     }
@@ -179,5 +180,24 @@ class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
         $this->mockProductRepository->method('get')->with('test')->willReturn($mockProduct);
         
         $this->assertSame(ProductStatusAdapterInterface::ENABLED, $this->productStatusAdapter->getStatusBySku('test'));
+    }
+
+    public function testItThrowsAnExceptionIfTheProductAlreadyIsEnabled()
+    {
+        $this->mockProductRepository->method('get')->willReturn($this->getMockEnabledProduct('test'));
+        $this->setExpectedException(
+            \RuntimeException::class,
+            'The product with the SKU "test" already is enabled'
+        );
+        $this->productStatusAdapter->enableProductWithSku('test');
+    }
+
+    public function testItEnablesAnExistingProduct()
+    {
+        $mockProduct = $this->getMockDisabledProduct('test');
+        $mockProduct->expects($this->once())->method('setStatus')->with(ProductStatus::STATUS_ENABLED);
+        $this->mockProductRepository->method('get')->willReturn($mockProduct);
+        $this->mockProductRepository->expects($this->once())->method('save');
+        $this->productStatusAdapter->enableProductWithSku('test');
     }
 }
