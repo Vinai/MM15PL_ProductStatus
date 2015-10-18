@@ -4,12 +4,12 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="showProductStatus" xsi:type="object">\MMPL15\ProductStatus\Console\Command\ShowProductStatusCommand</item>
-                <item name="disableProduct" xsi:type="object">\MMPL15\ProductStatus\Console\Command\DisableProductCommand</item>
-                <item name="enableProduct" xsi:type="object">\MMPL15\ProductStatus\Console\Command\EnableProductCommand</item>
+                <item name="showProductStatus" xsi:type="object">\MM15PL\ProductStatus\Console\Command\ShowProductStatusCommand</item>
+                <item name="disableProduct" xsi:type="object">\MM15PL\ProductStatus\Console\Command\DisableProductCommand</item>
+                <item name="enableProduct" xsi:type="object">\MM15PL\ProductStatus\Console\Command\EnableProductCommand</item>
             </argument>
         </arguments>
     </type>
-    <preference for="\MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface" type="\MMPL15\ProductStatus\Model\ProductStatusAdapter"/>
-    <preference for="\MMPL15\ProductStatus\Api\ProductStatusManagementInterface" type="\MMPL15\ProductStatus\Model\ProductStatusManagement"/>
+    <preference for="\MM15PL\ProductStatus\LibraryApi\ProductStatusAdapterInterface" type="\MM15PL\ProductStatus\Model\ProductStatusAdapter"/>
+    <preference for="\MM15PL\ProductStatus\Api\ProductStatusManagementInterface" type="\MM15PL\ProductStatus\Model\ProductStatusManagement"/>
 </config>

@@ -1,13 +1,13 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\Model;
+namespace MM15PL\ProductStatus\Model;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
+use MM15PL\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 use Magento\Framework\App\State as AppState;
 
 class ProductStatusAdapter implements ProductStatusAdapterInterface

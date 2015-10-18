@@ -1,13 +1,13 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\Model;
+namespace MM15PL\ProductStatus\Model;
 
-use MMPL15\ProductStatus\Api\ProductStatusManagementInterface;
-use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
+use MM15PL\ProductStatus\Api\ProductStatusManagementInterface;
+use MM15PL\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
 /**
- * @covers \MMPL15\ProductStatus\Model\ProductStatusManagement
+ * @covers \MM15PL\ProductStatus\Model\ProductStatusManagement
  */
 class ProductStatusManagementTest extends \PHPUnit_Framework_TestCase
 {

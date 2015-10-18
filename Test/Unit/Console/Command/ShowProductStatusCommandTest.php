@@ -1,16 +1,16 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\Console\Command;
+namespace MM15PL\ProductStatus\Console\Command;
 
-use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
+use MM15PL\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * @covers MMPL15\ProductStatus\Console\Command\ShowProductStatusCommand
+ * @covers MM15PL\ProductStatus\Console\Command\ShowProductStatusCommand
  */
 class ShowProductStatusCommandTest extends \PHPUnit_Framework_TestCase
 {

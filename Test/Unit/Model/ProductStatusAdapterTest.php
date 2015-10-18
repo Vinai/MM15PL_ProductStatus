@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\Model;
+namespace MM15PL\ProductStatus\Model;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
@@ -10,10 +10,10 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status as ProductStatus;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\App\State as AppState;
-use MMPL15\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
+use MM15PL\ProductStatus\LibraryApi\ProductStatusAdapterInterface;
 
 /**
- * @covers \MMPL15\ProductStatus\Model\ProductStatusAdapter
+ * @covers \MM15PL\ProductStatus\Model\ProductStatusAdapter
  */
 class ProductStatusAdapterTest extends \PHPUnit_Framework_TestCase
 {

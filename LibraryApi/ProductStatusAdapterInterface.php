@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\LibraryApi;
+namespace MM15PL\ProductStatus\LibraryApi;
 
 interface ProductStatusAdapterInterface
 {

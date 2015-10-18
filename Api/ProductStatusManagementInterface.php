@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MMPL15\ProductStatus\Api;
+namespace MM15PL\ProductStatus\Api;
 
 interface ProductStatusManagementInterface
 {

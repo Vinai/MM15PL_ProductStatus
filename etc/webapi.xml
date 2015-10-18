@@ -2,16 +2,16 @@
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
     
-    <route method="GET" url="/V1/mmpl15/product/status/:sku">
-        <service class="\MMPL15\ProductStatus\Api\ProductStatusManagementInterface" method="get"/>
+    <route method="GET" url="/V1/mM15PL/product/status/:sku">
+        <service class="\MM15PL\ProductStatus\Api\ProductStatusManagementInterface" method="get"/>
         <resources>
-            <resource ref="MMPL15_ProductStatus::product_status"/>
+            <resource ref="MM15PL_ProductStatus::product_status"/>
         </resources>
     </route>
-    <route method="PUT" url="/V1/mmpl15/product/status/:sku">
-        <service class="\MMPL15\ProductStatus\Api\ProductStatusManagementInterface" method="set"/>
+    <route method="PUT" url="/V1/mM15PL/product/status/:sku">
+        <service class="\MM15PL\ProductStatus\Api\ProductStatusManagementInterface" method="set"/>
         <resources>
-            <resource ref="MMPL15_ProductStatus::product_status"/>
+            <resource ref="MM15PL_ProductStatus::product_status"/>
         </resources>
     </route>
     

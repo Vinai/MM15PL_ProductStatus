@@ -6,7 +6,7 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Catalog::catalog">
                     <resource id="Magento_Catalog::catalog_inventory">
-                        <resource id="MMPL15_ProductStatus::product_status" title="Product Status" sortOrder="66"/>
+                        <resource id="MM15PL_ProductStatus::product_status" title="Product Status" sortOrder="66"/>
                     </resource>
                 </resource>
             </resource>
